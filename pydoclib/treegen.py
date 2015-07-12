@@ -22,14 +22,14 @@ def count_class_refs(class_name, all_files):
         '=\s+%s\s*\(' % class_name,
         '\s+%s\.' % class_name
     ]
-    print "Searching for refs to class [%s]..." % class_name
+    # print "Searching for refs to class [%s]..." % class_name
     for fpath in all_files:
         with open(fpath, "r") as f:
             for line in f:
                 for p in pats:
                     matches = re.findall(p, line)
                     refs += len(matches)
-    print "\tFound %s!" % refs
+    # print "\tFound %s!" % refs
     
     if refs > 0:
         return refs
@@ -112,7 +112,7 @@ def make_pkg_tree(coderoot):
             all_files.extend(map(lambda x: os.path.join(root, x), files))
             subdir_parts = filter(lambda x: x, root[len(coderoot):].split("/"))
             if subdir_parts:
-                print "pkg: %s" % subdir_parts
+                # print "pkg: %s" % subdir_parts
                 if is_pkg(subdir_parts, files):
                     new_node = add_to_tree(pkg_tree, subdir_parts)
                     new_node['__modules'] = map(lambda z: {'pkg': '.'.join(subdir_parts), 'mod': z.split('.')[0]}, filter(lambda x: x.endswith(".py"), files))
@@ -127,7 +127,7 @@ def make_pkg_tree(coderoot):
 
         root_files = map(lambda x: os.path.basename(x), glob.glob(os.path.join(coderoot, "*.py")))
         pkg_tree['__modules'] = map(lambda z: {'pkg': treename, 'mod': z.split('.')[0]}, root_files)
-        print pkg_tree['__modules']
+        # print pkg_tree['__modules']
         add_mod_classes(coderoot, pkg_tree['__modules'])
         
         # Convert to format needed for d3 tree map

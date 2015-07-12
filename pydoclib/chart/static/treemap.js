@@ -1,6 +1,11 @@
 function render_package_list() {
     d3.json("data/package-list.json", function(pkg_data) {
-        $.each(pkg_data, function(name, path){
+        var keys = Object.keys(pkg_data);
+        keys.sort();
+        keys.forEach(function(key){
+            var name = key;
+            var path = pkg_data[key];
+            
             $("#other-links").append('<a class="pkg-link" href="#" data-path="'+path+'">'+name+'</a>');
         });
 
