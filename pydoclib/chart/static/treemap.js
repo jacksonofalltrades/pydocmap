@@ -11,6 +11,10 @@ function render_package_list() {
 
         $(".pkg-link").bind("click", function(){
             var path = $(this).attr("data-path");
+            $(".pkg-link").addClass("link-deselected");
+            $(".pkg-link").removeClass("link-selected");
+            $(this).addClass("link-selected");
+            $(this).removeClass("link-deselected");
             render_treemap(path);
         });
     });    
