@@ -43,3 +43,11 @@ rect.parent,
 .children:hover rect.child {
   fill: #bbb;
 }
+
+#other-links {
+    margin-left: 20px;
+}
+
+.pkg-link {
+    margin-right: 20px;
+}

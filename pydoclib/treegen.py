@@ -3,6 +3,7 @@
 
 import sys
 import os
+import glob
 from os.path import join, getsize
 import re
 import json
@@ -45,8 +46,12 @@ def add_to_tree(pkg_tree, pkg_node_path):
     return curr_node
 
 def add_mod_classes(coderoot, modules):
+    coderoot_base = os.path.basename(coderoot)
     for m in modules:
-        full_pkg_path = "%s.%s" % (m['pkg'], m['mod'])
+        if coderoot_base == m['pkg']:
+            full_pkg_path = m['mod']
+        else:
+            full_pkg_path = "%s.%s" % (m['pkg'], m['mod'])
         mod_file_path = full_pkg_path.replace(".", "/")
         mod_file_path = os.path.join(coderoot, mod_file_path + ".py")
         # path_str = open(mod_file_path, 'r').read()
@@ -119,6 +124,11 @@ def make_pkg_tree(coderoot):
                 #if 'CVS' in dirs:
                 #    dirs.remove('CVS')  # don't visit CVS directories
                 """
+
+        root_files = map(lambda x: os.path.basename(x), glob.glob(os.path.join(coderoot, "*.py")))
+        pkg_tree['__modules'] = map(lambda z: {'pkg': treename, 'mod': z.split('.')[0]}, root_files)
+        print pkg_tree['__modules']
+        add_mod_classes(coderoot, pkg_tree['__modules'])
         
         # Convert to format needed for d3 tree map
         treemap_data = {

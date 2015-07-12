@@ -1,4 +1,19 @@
-function render_treemap() {
+function render_package_list() {
+    d3.json("data/package-list.json", function(pkg_data) {
+        $.each(pkg_data, function(name, path){
+            $("#other-links").append('<a class="pkg-link" href="#" data-path="'+path+'">'+name+'</a>');
+        });
+
+        $(".pkg-link").bind("click", function(){
+            var path = $(this).attr("data-path");
+            render_treemap(path);
+        });
+    });    
+}
+
+function render_treemap(pkg_path) {
+    $("#chart").empty();
+    
     var margin = {top: 20, right: 0, bottom: 0, left: 0},
         width = 960,
         height = 500 - margin.top - margin.bottom,
@@ -41,7 +56,7 @@ function render_treemap() {
         .attr("y", 6 - margin.top)
         .attr("dy", ".75em");
     
-    d3.json("data/package.json", function(pkg_data) {
+    d3.json("data/"+pkg_path+"/package.json", function(pkg_data) {
         var root = pkg_data.tree;
         $("#root-pkg").html(pkg_data.name);
 
